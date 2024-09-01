@@ -1,7 +1,7 @@
 package projectAnimal.birds;
 
 import projectAnimal.Animal;
-import projectAnimal.Flying;
+import projectAnimal.props.Flying;
 
 public class Duck extends Animal implements Flying {
 

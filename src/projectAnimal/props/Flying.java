@@ -1,4 +1,4 @@
-package projectAnimal;
+package projectAnimal.props;
 
 public interface Flying {
 

@@ -1,6 +1,4 @@
-package projectAnimal;
-
-import java.util.Arrays;
+package projectAnimal.enums;
 
 public enum AnimalTypes {
     CAT,

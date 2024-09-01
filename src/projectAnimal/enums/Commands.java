@@ -1,4 +1,4 @@
-package projectAnimal;
+package projectAnimal.enums;
 
 public enum Commands {
     ADD,

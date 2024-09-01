@@ -1,6 +1,8 @@
 package projectAnimal;
 
 import projectAnimal.birds.Duck;
+import projectAnimal.enums.AnimalTypes;
+import projectAnimal.enums.Commands;
 import projectAnimal.pets.Cat;
 import projectAnimal.pets.Dog;
 
