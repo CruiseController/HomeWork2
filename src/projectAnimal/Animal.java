@@ -1,10 +1,10 @@
 package projectAnimal;
 
-public abstract class Animal {
-    String name;
-    Integer age;
-    Double weight;
-    String color;
+public abstract class Animal{
+    private String name;
+    private Integer age;
+    private Double weight;
+    private String color;
 
     public String getName() {
         return name;
@@ -38,23 +38,13 @@ public abstract class Animal {
         this.color = color;
     }
 
-    public String ageYear() {
-        if (age % 10 == 1 && age % 100 != 11) {
-            return age + " год";
-        }
-        if (age % 10 >= 2 && age % 10 <= 4 && (age % 100 < 10 || age % 100 >= 20)) {
-            return age + " года";
-        }
-        return age + " лет";
-    }
-
     public abstract void say();
 
-    public abstract void go();
+    private void go(){};
 
-    public abstract void drink();
+    private void drink(){};
 
-    public abstract void eat();
+    private void eat(){};
 
     public Animal(String name, Integer age, Double weight, String color) {
         this.name = name;
@@ -63,13 +53,13 @@ public abstract class Animal {
         this.color = color;
     }
 
-    @Override
-    public String toString() {
+        public String toString() {
+        YearType yearType = new YearType();
         return "Привет меня зовут " +
                 name +
-                ", мне " + ageYear() +
-                ", мой вес " + weight +
-                ", мой цвет " + color + " кг.";
+                ", мне " + yearType.ageYear(age) +
+                ", мой вес " + weight + " кг." +
+                ", мой цвет " + color;
 
     }
 

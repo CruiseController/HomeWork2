@@ -3,35 +3,42 @@ package projectAnimal;
 import projectAnimal.birds.Duck;
 import projectAnimal.enums.AnimalTypes;
 import projectAnimal.enums.Commands;
-import projectAnimal.pets.Cat;
-import projectAnimal.pets.Dog;
+import projectAnimal.utils.AnimalFabrique;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
-import java.util.ArrayList;
 
 public class Main {
 
     public static void main(String[] args) {
-        ArrayList<Animal> animal = new ArrayList<>();
+        ArrayList<Animal> animalList = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
-        boolean exit = false;
-        while (!exit) {
-            System.out.println("Ввдедите одну из команд: Add, List или Exit");
+        while (true) {
+            System.out.println("Ввдедите одну из команд: Add, List. Для выхода нажмите Exit");
             String inputCommand = scanner.nextLine();
-            Commands command = Commands.fromString(inputCommand);
-            //Не работает
-            if (command == null) {
-                System.out.println("Вы ввели некорректную команду");
+            Commands command;
+            try {
+                command = Commands.fromString(inputCommand);
             }
-            //
-
+            catch (IllegalArgumentException com) {
+                com.fillInStackTrace();
+                System.out.println("Вы ввели некорректную команду, повторите попытку");
+                continue;
+            }
             switch (command) {
+
                 case ADD:
                     System.out.println(Arrays.toString(AnimalTypes.values()));
                     System.out.println("Выберите животное - ");
                     String inputAnimalType = scanner.nextLine();
-                    AnimalTypes animalTypes = AnimalTypes.fromString(inputAnimalType);
+                    AnimalTypes animalTypes;
+                    try {
+                         animalTypes = AnimalTypes.fromString(inputAnimalType);
+                    }catch (IllegalArgumentException e){
+                        System.out.println("Вы ввели некорректную команду, повторите попытку");
+                        continue;
+                    }
 
                     System.out.println("Выберите имя: ");
                     String inputAnimalName = scanner.nextLine();
@@ -45,40 +52,28 @@ public class Main {
                     System.out.println("Выберите цвет: ");
                     String inputAnimalColor = scanner.nextLine();
 
-                    switch (animalTypes){
-                        case CAT:
-                            Cat cat = new Cat(inputAnimalName, inputAnimalAge, inputAnimalWeight, inputAnimalColor);
-                            animal.add(cat);
-                            cat.say();
-                            break;
-
-                        case DOG:
-                            Dog dog = new Dog(inputAnimalName, inputAnimalAge, inputAnimalWeight, inputAnimalColor);
-                            animal.add(dog);
-                            dog.say();
-
-                            break;
-
-                        case DUCK:
-                            Duck duck = new Duck(inputAnimalName, inputAnimalAge, inputAnimalWeight, inputAnimalColor);
-                            animal.add(duck);
-                            duck.say();
-                            duck.fly();
-                            break;
+                    AnimalFabrique fabrique = new AnimalFabrique();
+                    Animal animal = fabrique.createAnimal(animalTypes, inputAnimalName, inputAnimalAge, inputAnimalWeight, inputAnimalColor);
+                    animal.say();
+                    if(animal instanceof Duck){
+                        ((Duck) animal).fly();
                     }
+                    animalList.add(animal);
                     break;
-                case null:
-                    break;
+
                 case LIST:
-                    for(Animal animalFromList: animal){
+                    for(Animal animalFromList: animalList){
                         System.out.println(animalFromList.toString());
                     }
                     break;
+
                 case EXIT:
-                    exit = true;
                     System.out.println("Выполнение команды завершено");
+                    System.exit(0);
+
                 default:
-                    System.out.println("Такого животного нет в списке");
+                    System.out.println("Для выхода введите exit");
+                    System.exit(0);
                     break;
             }
         }
