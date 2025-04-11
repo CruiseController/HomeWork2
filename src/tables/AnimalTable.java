@@ -101,7 +101,7 @@ public class AnimalTable extends AbsTable implements ITable {
         throw new RuntimeException("ERROR");
     }
 
-    public Animal findById(int idSearch) {
+    public Animal findById(long idSearch) {
         try {
             String query = String.format("SELECT * FROM %s  WHERE id = '%s'", name, idSearch);
             ResultSet rs = iDbConnection.executeQueryWithAnswer(query);

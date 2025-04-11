@@ -49,20 +49,37 @@ public class Main {
                         try {
                             System.out.println("Введите тип животного для поиска: ");
                             String userInputData = scanner.nextLine();
+                            if (userInputData.equals("q")){
+                                break;
+                            }
                             inputEnum = AnimalsDataEnum.toEnumAnimalsData(userInputData);
                             table.findByType(inputEnum).forEach(System.out::println);
                         } catch (IllegalArgumentException ex) {
                             System.out.println("Введена неверная команда, попробуйте снова");
                         }
                     }
-
                     break;
 
                 case UPDATE:
 
-
+                    List<Animal> animals = table.findAll();
+                    List<Long> ids = new ArrayList<>();
+                    for (Animal a: animals){
+                        ids.add(a.getId());
+                    }
                     System.out.println("Введите id животного для редактирования: ");
-                    int inputId = Integer.parseInt(scanner.nextLine());
+                    long inputId = 0L;
+                    while (!ids.contains(inputId)){
+                    try {
+                        inputId = Long.parseLong(scanner.nextLine());
+                    }
+                    catch (NumberFormatException e){
+                        System.out.println("Некорректный тип данных ");
+                    }
+                    if (!ids.contains(inputId)){
+                        System.out.println("Передан несущестивующий id ");
+                    }
+                    }
                     Animal animalForUpdate = table.findById(inputId);
                     System.out.println(animalForUpdate);
 
@@ -73,19 +90,24 @@ public class Main {
                         animalForUpdate.setName(newName);
                     }
 
-                    System.out.println("Введите новый возраст: ");
-                    String newAge = scanner.nextLine();
-                    if (newAge != null && !newAge.isEmpty() && IsNumericCheck.isNumeric(newAge)) {
-                        animalForUpdate.setAge(Integer.parseInt(newAge));
+                    while (true) {
+                        System.out.println("Введите новый возраст: ");
+                        String newAge = scanner.nextLine();
+                        if (newAge != null && !newAge.isEmpty() && IsNumericCheck.isNumeric(newAge)) {
+                            animalForUpdate.setAge(Integer.parseInt(newAge));
+                            break;
+                        }
                     }
-                    System.out.println("Неподдерживаемый тип данных, повторите попытку ");
 
-                    System.out.println("Введите новый вес: ");
-                    String newWeight = scanner.nextLine();
-                    if (newWeight != null && !newWeight.isEmpty() && IsNumericCheck.isNumeric(newWeight)) {
-                        animalForUpdate.setWeight(Integer.parseInt(newWeight));
+                    while (true) {
+                        System.out.println("Введите новый вес: ");
+                        String newWeight = scanner.nextLine();
+                        if (newWeight != null && !newWeight.isEmpty() && IsNumericCheck.isNumeric(newWeight)) {
+                            animalForUpdate.setWeight(Integer.parseInt(newWeight));
+                            break;
+                        }
                     }
-                    System.out.println("Неподдерживаемый тип данных, повторите попытку ");
+
 
                     System.out.println("Введите новый цвет: ");
                     String newColor = scanner.nextLine();

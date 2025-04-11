@@ -7,6 +7,7 @@ public class IsNumericCheck {
             Integer.parseInt(inputString);
             return true;
         } catch (NumberFormatException ex) {
+            System.out.println("Неподдерживаемый тип данных, повторите попытку ");
             return false;
         }
 
