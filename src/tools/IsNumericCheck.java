@@ -1,7 +1,5 @@
 package tools;
 
-import animals.pets.Dog;
-
 public class IsNumericCheck {
 
     public static boolean isNumeric(String inputString) {

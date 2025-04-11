@@ -1,10 +1,7 @@
 package data;
 
-import java.util.Locale;
-
 public enum ActionsData {
-
-    ADD, LIST, EXIT;
+    ADD, LIST, EXIT, SEARCH, UPDATE;
 
     public static ActionsData toEnumActionsFunc(String userInputData) {
 

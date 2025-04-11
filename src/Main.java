@@ -1,10 +1,11 @@
 import animals.Animal;
-import animals.pets.Cat;
-import animals.pets.Dog;
 import data.ActionsData;
 import data.AnimalsDataEnum;
+import tables.AnimalTable;
+import tools.AnimalsFactory;
 import tools.IsNumericCheck;
 
+import java.sql.SQLException;
 import java.util.*;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -12,9 +13,9 @@ import java.util.*;
 public class Main {
     static Scanner scanner = new Scanner(System.in);
 
-    public static void main(String[] args) {
 
-        List<Animal> animalList = new ArrayList<>();
+    public static void main(String[] args) throws SQLException {
+        AnimalTable table = new AnimalTable();
 
         while (true) {
             ActionsData inputData = null;
@@ -32,20 +33,78 @@ public class Main {
 
                     Animal animal = getAnimal();
 
-                    animalList.add(animal);
+                    table.saveQuery(animal);
+
                     break;
 
                 case LIST:
 
-                    animalList.forEach(System.out ::println);
+                    table.findAll().forEach(System.out::println);
 
                     break;
+
+                case SEARCH:
+                    AnimalsDataEnum inputEnum = null;
+                    while (inputEnum == null) {
+                        try {
+                            System.out.println("Введите тип животного для поиска: ");
+                            String userInputData = scanner.nextLine();
+                            inputEnum = AnimalsDataEnum.toEnumAnimalsData(userInputData);
+                            table.findByType(inputEnum).forEach(System.out::println);
+                        } catch (IllegalArgumentException ex) {
+                            System.out.println("Введена неверная команда, попробуйте снова");
+                        }
+                    }
+
+                    break;
+
+                case UPDATE:
+
+
+                    System.out.println("Введите id животного для редактирования: ");
+                    int inputId = Integer.parseInt(scanner.nextLine());
+                    Animal animalForUpdate = table.findById(inputId);
+                    System.out.println(animalForUpdate);
+
+
+                    System.out.println("Введите новое имя: ");
+                    String newName = scanner.nextLine();
+                    if (newName != null && !newName.isEmpty()) {
+                        animalForUpdate.setName(newName);
+                    }
+
+                    System.out.println("Введите новый возраст: ");
+                    String newAge = scanner.nextLine();
+                    if (newAge != null && !newAge.isEmpty() && IsNumericCheck.isNumeric(newAge)) {
+                        animalForUpdate.setAge(Integer.parseInt(newAge));
+                    }
+                    System.out.println("Неподдерживаемый тип данных, повторите попытку ");
+
+                    System.out.println("Введите новый вес: ");
+                    String newWeight = scanner.nextLine();
+                    if (newWeight != null && !newWeight.isEmpty() && IsNumericCheck.isNumeric(newWeight)) {
+                        animalForUpdate.setWeight(Integer.parseInt(newWeight));
+                    }
+                    System.out.println("Неподдерживаемый тип данных, повторите попытку ");
+
+                    System.out.println("Введите новый цвет: ");
+                    String newColor = scanner.nextLine();
+                    if (newColor != null && !newColor.isEmpty()) {
+                        animalForUpdate.setColor(newColor);
+                    }
+
+                    table.updateQuery(animalForUpdate);
+                    System.out.println("Данные успешно обновлены ");
+
+                    break;
+
 
                 case EXIT:
                     System.exit(0);
             }
         }
     }
+
 
     private static Animal getAnimal() {
         AnimalsDataEnum animalType = null;
@@ -92,6 +151,8 @@ public class Main {
         String color = scanner.nextLine();
 
 
-        return AnimalsFactory.animalsFactory(animalType, name, age, weight, color);
+        return AnimalsFactory.animalsFactory(null, animalType, name, age, weight, color);
+
     }
+
 }
